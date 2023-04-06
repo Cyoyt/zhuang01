@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div
+      id="main"
+      class="ptop"
+      style="width: 100%; margin: 0 auto 0; height: 380px"
+    ></div>
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <script src="../js/echarts.min.js"></script>
+    <script>
+      $(function () {
+  var myChart = echarts.init(document.getElementById("main"));
+
+  var option = {
+    title: {
+      text: "",
+      textStyle: {
+        fontWeight: "normal",
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      x: "right",
+      y: "top",
+      data: ["数据1", "数据2", "数据3"],
+    },
+    xAxis: [
+      {
+        splitLine: { show: true },
+        type: "category",
+        boundaryGap: false,
+        axisLabel: {
+          interval: 0,
+          rotate: 45,
+          margin: 2,
+        },
+        data: [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+        ],
+      },
+    ],
+    yAxis: [
+      {
+        name: "次数",
+        type: "value",
+        min: 0,
+      },
+    ],
+    series: [
+      {
+        name: "数据3",
+        type: "line",
+        data: [
+          722, 576, 312, 512, 196, 350, 384, 517, 22, 371, 214, 309, 273, 624, 
+          553, 463, 404, 301, 376, 602, 225, 301, 210, 50, 89, 400, 230, 257,
+        ],
+        lineStyle: {
+          normal: {
+            width: 0,
+          },
+        },
+        areaStyle: {
+          normal: {
+            color: "rgba(136,143,250,0.7)",
+          },
+        },
+        animationDelay: function (idx) {
+          return idx * 150;
+        },
+        animationDuration: 2000,
+      },
+      {
+        name: "数据2",
+        type: "line",
+        data: [
+          561, 408, 106, 356, 98, 145, 142, 308, 51, 96, 140, 5, 37, 102,
+          426, 231, 252, 352, 213, 200, 488, 209, 120, 150, 12, 230, 79,
+          129,
+        ],
+        lineStyle: {
+          normal: {
+            width: 0,
+          },
+        },
+        areaStyle: {
+          normal: {
+            color: "#73be47",
+          },
+        },
+        animationDelay: function (idx) {
+          return idx * 150;
+        },
+        animationDuration: 2000,
+      },
+      {
+        name: "数据1",
+        type: "line",
+        data: [
+          453, 330, 182, 226, 48, 108, 85, 177, 41, 114, 23, 16, 53, 88,
+          329, 244, 130, 303, 140, 152, 406, 116, 94, 166, 38, 356, 68,
+          82,
+        ],
+        lineStyle: {
+          normal: {
+            width: 0,
+          },
+        },
+        areaStyle: {
+          normal: {
+            color: "#ff7445",
+          },
+        },
+        barWidth: 20,
+        animationDelay: function (idx) {
+          return idx * 150;
+        },
+        animationDuration: 2000,
+      },
+    ],
+  };
+
+  //使Echarts图表自适应响应窗口变化
+  window.onresize = myChart.resize;
+
+  function refreshChart() {
+    // 这里可以替换为你自己的数据获取方法
+    var data1 = getRandomData(28, 50, 750);
+    var data2 = getRandomData(28, 50, 750);
+    var data3 = getRandomData(28, 50, 750);
+
+    option.series[0].data = data1;
+    option.series[1].data = data2;
+    option.series[2].data = data3;
+
+    myChart.setOption(option);
+  }
+
+  setInterval(refreshChart, 2000);
+  
+  // 随机生成指定长度和范围的数据
+  function getRandomData(len, min, max) {
+    var data = [];
+
+    for (var i = 0; i < len; i++) {
+      data.push(Math.floor(Math.random() * (max - min + 1) + min));
+    }
+
+    return data;
+  }
+})();
+    </script>
+  </body>
+</html>

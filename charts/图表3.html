@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>图表3</title>
+    <link href="../css/main.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
+    <script src="../js/echarts.min.js"></script>
+  </head>
+
+  <body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 100%; height: 880px"></div>
+    <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById("main"));
+
+      // 指定图表的配置项和数据
+      var option = {
+        backgroundColor: "#fff",
+        title: {
+          text: "",
+          x: "center",
+          textStyle: {
+            fontWeight: "normal",
+          },
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{b}",
+        },
+        legend: {
+          orient: "vertical",
+          left: "right",
+          data: [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+          ],
+        },
+        calculable: true,
+        series: [
+          {
+            name: "面积模式",
+            type: "pie",
+            roseType: "area",
+            data: [
+              {
+                value: 9.91,
+                name: "1\n9.91%",
+                itemStyle: {
+                  normal: {
+                    color: "#ff7445",
+                  },
+                },
+              },
+              {
+                value: 7.81,
+                name: "2\n7.81%",
+                itemStyle: {
+                  normal: {
+                    color: "#f3ac40",
+                  },
+                },
+              },
+              {
+                value: 7.26,
+                name: "3\n7.26%",
+                itemStyle: {
+                  normal: {
+                    color: "#73be47",
+                  },
+                },
+              },
+              {
+                value: 6.68,
+                name: "4\n6.68%",
+                itemStyle: {
+                  normal: {
+                    color: "#09c3e4",
+                  },
+                },
+              },
+              {
+                value: 6.41,
+                name: "5\n6.41%",
+                itemStyle: {
+                  normal: {
+                    color: "pink",
+                  },
+                },
+              },
+              {
+                value: 5.99,
+                name: "6\n5.99%",
+                itemStyle: {
+                  normal: {
+                    color: "blue",
+                  },
+                },
+              },
+              {
+                value: 5.76,
+                name: "7\n5.76%",
+                itemStyle: {
+                  normal: {
+                    color: "red",
+                  },
+                },
+              },
+              {
+                value: 5.52,
+                name: "8\n5.52%",
+                itemStyle: {
+                  normal: {
+                    color: "green",
+                  },
+                },
+              },
+              { value: 5.25, name: "9\n5.25%" },
+              { value: 4.91, name: "10\n4.91%" },
+              { value: 4.73, name: "11\n4.73%" },
+              { value: 4.51, name: "12\n4.51%" },
+              { value: 4.24, name: "13\n4.24%" },
+              { value: 3.97, name: "14\n3.97%" },
+              { value: 3.62, name: "15\n3.62%" },
+              { value: 3.55, name: "16\n3.55%" },
+              { value: 2.56, name: "17\n2.56%" },
+              { value: 1.81, name: "18\n1.81%" },
+              { value: 1.45, name: "19\n1.45%" },
+              { value: 1.21, name: "20\n1.21%" },
+              { value: 1.04, name: "21\n1.04%" },
+              { value: 5.42, name: "其它\n5.42%" },
+            ],
+          },
+        ],
+      };
+      window.onresize = myChart.resize;
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    </script>
+  </body>
+</html>

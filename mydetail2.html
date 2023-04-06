@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>绞吸挖泥船定位钢桩工作状态智能监测预警</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        $(".imglist li").click(function () {
+          // 获取当前图片的src
+          var src = $(this).find(".imgbox img").attr("src");
+          //添加到弹窗img
+          $(".bigimg").attr("src", src);
+          // 显示弹窗
+          $(".maskweap").fadeIn();
+        });
+        // 点击盒子以外的地方弹窗关闭
+        $(document).mousedown(function (e) {
+          if ($(e.target).parent(".imgshow").length == 0) {
+            $(".maskweap").fadeOut(); //弹窗关闭
+          }
+        });
+      });
+    </script>
+    <style>
+      html,
+      body {
+        height: inherit;
+      }
+
+      /* 图片弹窗 */
+      .imglistwrap {
+        width: 100%;
+        height: 100%;
+      }
+      .imglist {
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+        box-sizing: border-box;
+        display: flex;
+        display: -webkit-flex;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+      }
+      .imglist li {
+        width: 100%;
+        margin-bottom: 0%;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+      }
+      .imglist li .imgbox {
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+      }
+      .imglist li .imgbox img {
+        display: block;
+        width: 100%;
+        transition: all 0.6s;
+        object-fit: cover;
+        height: 100%;
+      }
+      .imglist li:hover .imgbox img {
+        transform: scale(1.1);
+      }
+      .imglist li .text {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: all 0.3s;
+        display: flex;
+        display: -webkit-flex;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
+      .imglist li:hover .text {
+        opacity: 1;
+      }
+      .imglist li .text i {
+        font-size: 20px;
+        color: #ffffff;
+        opacity: 0;
+        transition: all 0.3s;
+        transform: translateY(-100%);
+        -webkit-transform: translateY(-100%);
+      }
+      .imglist li:hover .text i {
+        opacity: 1;
+        transform: none;
+        -webkit-transform: none;
+      }
+
+      /* maskweap */
+      .maskweap {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 1;
+        display: flex;
+        display: -webkit-flex;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        align-items: center;
+        display: none;
+      }
+      .maskweap .imgshow {
+        width: 100%;
+        box-sizing: border-box;
+        height: 100%;
+        display: flex;
+        display: -webkit-flex;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+      }
+      .maskweap .imgshow img {
+        display: block;
+        width: auto;
+        max-width: 28%;
+        box-sizing: border-box;
+        padding: 10px;
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mydetail1">
+      <div class="dform">
+        <div class="img_show">
+          <div
+            style="
+              font-weight: bold;
+              font-size: 30px;
+              color: black;
+              text-align: center;
+              text-shadow: black;
+            "
+          >
+            图片展示
+          </div>
+          <div class="img_table" style="margin-top: 3%">
+            <table width="80%" border="3" cellpadding="0" cellspacing="0">
+              <tr>
+                <th>
+                  <div class="imglistwrap">
+                    <ul class="imglist">
+                      <li>
+                        <div class="imgbox">
+                          <img
+                            src="charts/image/Y方向弯曲应力云图.png"
+                            title="Y方向弯曲应力云图"
+                          />
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="maskweap">
+                    <div class="imgshow">
+                      <img src="" class="bigimg" />
+                    </div>
+                  </div>
+                </th>
+
+                <th>
+                  <div class="imglistwrap">
+                    <ul class="imglist">
+                      <li>
+                        <div class="imgbox">
+                          <img
+                            src="charts/image/Y方向剪应力云图.png"
+                            title="Y方向剪应力云图"
+                          />
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="maskweap">
+                    <div class="imgshow">
+                      <img src="" class="bigimg" />
+                    </div>
+                  </div>
+                </th>
+
+                <th>
+                  <div class="imglistwrap">
+                    <ul class="imglist">
+                      <li>
+                        <div class="imgbox">
+                          <img
+                            src="charts/image/Z方向弯曲应力云图.png"
+                            title="Z方向弯曲应力云图"
+                          />
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="maskweap">
+                    <div class="imgshow">
+                      <img src="" class="bigimg" />
+                    </div>
+                  </div>
+                </th>
+              </tr>
+
+              <tr>
+                <th>
+                  <div class="imglistwrap">
+                    <ul class="imglist">
+                      <li>
+                        <div class="imgbox">
+                          <img
+                            src="charts/image/Z方向剪应力云图.png"
+                            title="Z方向剪应力云图"
+                          />
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="maskweap">
+                    <div class="imgshow">
+                      <img src="" class="bigimg" />
+                    </div>
+                  </div>
+                </th>
+
+                <th>
+                  <div class="imglistwrap">
+                    <ul class="imglist">
+                      <li>
+                        <div class="imgbox">
+                          <img src="charts/image/位移图.png" title="位移图" />
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="maskweap">
+                    <div class="imgshow">
+                      <img src="" class="bigimg" />
+                    </div>
+                  </div>
+                </th>
+
+                <th>
+                  <div class="imglistwrap">
+                    <ul class="imglist">
+                      <li>
+                        <div class="imgbox">
+                          <img src="charts/image/正应力云图.png" title="正应力云图" />
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="maskweap">
+                    <div class="imgshow">
+                      <img src="" class="bigimg" />
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

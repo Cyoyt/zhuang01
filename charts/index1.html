@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>绞吸挖泥船定位钢桩工作状态智能监测预警</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: rgb(1, 3, 28);
+      }
+
+      #tan {
+        position: absolute;
+        color: #fff;
+        z-index: 102;
+        font-size: 16px;
+      }
+
+      #tan0 {
+        position: absolute;
+        color: #fff;
+        background: rgba(2, 4, 27, 0.8);
+        padding: 20px;
+        border-radius: 5px;
+        border: 1px solid #00aeef;
+        z-index: 102;
+        width: 180px;
+        font-size: 16px;
+      }
+
+      #tan0 > div {
+        padding: 5px;
+      }
+
+      #left {
+        position: absolute;
+        z-index: 200;
+        width: 150px;
+        background: rgba(255, 255, 255, 1);
+        padding: 15px;
+        height: 100%;
+      }
+
+      [v-cloak] {
+        display: none;
+      }
+
+      .HUD {
+        box-shadow: 0 0 2px #00ffff inset;
+        background: linear-gradient(#00ffff, #00ffff) left top,
+          linear-gradient(#00ffff, #00ffff) left top,
+          linear-gradient(#00ffff, #00ffff) right bottom,
+          linear-gradient(#00ffff, #00ffff) right bottom;
+        background-repeat: no-repeat;
+        background-size: 1px 6px, 6px 1px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 16px;
+        padding: 4px 10px;
+      }
+/*-----------------背景格式---------------------*/
+body {background-image: url("image/map_bg.png");}
+/*-------------------标题格式-----------------*/
+    div#title{
+        font-weight:bold;
+        font-size: 40px;
+        color: aqua;
+        text-align:center;
+        text-shadow: black;
+        margin: auto;
+
+        }
+
+/*----------------------插入视频的格式、位置、隐藏边框定义----------------------*/
+.dataAllBorder02{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+.video_cage{
+    padding: 4px;
+    width: 100%;
+    object-fit: fill;
+}
+.video {
+    height: 100%;
+    width: 100%;
+}
+
+.title-box {
+  width: 100%;
+  height: 8%;
+  background: url(./image/box_title.png) top left no-repeat;
+  background-size: 100% 100%;
+  margin: auto;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  position: relative;
+  text-align:center;
+}
+
+.title-box1 {
+  width: 100%;
+  height: 5%;
+  background: url(./image/box_title.png) top left no-repeat;
+  background-size: 100% 100%;
+  margin: auto;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  position: relative;
+  text-align:center;
+}
+
+.left-top {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.left-top > .current-num {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(./image/border_bg01.png) top left no-repeat;
+  background-size: 100% 100%;
+}
+
+.current-num > div {
+  width: 100%;
+  height: 100%;
+  line-height: 0.8rem;
+  text-align: center;
+  background: url(./image/title_bg01.png) center center no-repeat;
+  font-size: 0.2rem;
+  color: #0e94ea;
+  background-size: 1.8rem 0.25rem;
+  font-weight: 900;
+}
+
+.current-num > p {
+  font-size: 0.46rem;
+  text-align: center;
+  color: white;
+}
+.table3 {
+  font-size: 0.16rem;
+  border: 1px solid #0e94ea;
+  border-top: none;
+  margin: 10px auto;
+}
+.table3 tr {
+  border-top: 1px solid #0e94ea;
+}
+.table3 thead tr {
+  background: rgba(14, 148, 234, 0.4);
+}
+
+.table3 tr.bg-color {
+  background: rgba(14, 148, 234, 0.2);
+}
+
+.table3 tr td:nth-child(2n + 1),
+.table3 tr td:nth-child(2n + 1) > p {
+  width: 3rem;
+}
+
+.table3 tr td:nth-child(2n),
+.table3 tr td:nth-child(2n) > p {
+  width: 1.8rem;
+}
+
+.table3 tr td,
+.table3 tr th {
+  border-right: 1px solid #0e94ea;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  color: #cdddf7;
+  text-align: center;
+}
+
+.table3 tr td p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #cdddf7;
+}
+
+.table3 thead tr th {
+  border-right: none;
+}
+
+.table3 tr td p.edit {
+  color: #0e94eb;
+  cursor: pointer;
+}
+
+.table3 tr td p.edit:hover,
+.table3 tr td p.edit.active {
+  color: #d09d26;
+}
+.breathe-zc{ position:relative; width:20px; height:20px; margin:10px auto; line-height:40px; border:1px solid #008000; border-radius:10px; color:#fff; font-size:20px; text-align:center; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.3); overflow:hidden; 
+		background-image: -webkit-gradient(linear, left top, left bottom, from(#00FF00), to(#00FF00));
+		background-image: -moz-linear-gradient(#00FF00,#00FF00);
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-name: breathe;
+    -webkit-animation-duration: 500ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+		animation:ease-in-out breathe 500ms infinite alternate; 
+}
+.breathe-zct{ position:relative; width:20px; height:20px; top:2px;float:left;  border:1px solid #008000; border-radius:20px; color:#fff; font-size:20px; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.3); overflow:hidden; 
+		background-image: -webkit-gradient(linear, left top, left bottom, from(#00FF00), to(#00FF00));
+		background-image: -moz-linear-gradient(#00FF00,#00FF00);
+}
+
+.breathe-yct{ position:relative; width:20px; height:20px; top:2px;float:left;   border:1px solid #008000; border-radius:20px; color:#fff; font-size:20px;  cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.3); overflow:hidden; 
+		background-image: -webkit-gradient(linear, left top, left bottom, from(#FF0000), to(#FF0000));
+		background-image: -moz-linear-gradient(#FF0000,#FF0000);
+}
+/*----------------------插入图片的格式、位置、隐藏边框定义----------------------*/
+/* 图片弹窗 */
+.imglistwrap{width: 100%;height:100%;}
+.imglist{width: 100%;padding: 0px;margin:0px;box-sizing: border-box;box-sizing: border-box;display: flex;display: -webkit-flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
+.imglist li{width: 100%;margin-bottom: 0%;overflow: hidden;position: relative;cursor: pointer;}
+.imglist li .imgbox{width: 100%;overflow: hidden;height: 100%;}
+.imglist li .imgbox img{display: block;width: 100%;transition: all .6s;object-fit: cover;height: 100%;}
+.imglist li:hover .imgbox img{transform: scale(1.1);}
+.imglist li .text{width: 100%;height: 100%;position: absolute;top: 0;left: 0;background-color: rgba(0,0,0,0.3);opacity: 0;transition: all .3s;display: flex;display: -webkit-flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;}
+.imglist li:hover .text{opacity: 1;}
+.imglist li .text i{font-size: 20px;color: #FFFFFF;opacity: 0;transition: all .3s;transform: translateY(-100%);-webkit-transform: translateY(-100%);}
+.imglist li:hover .text i{opacity: 1;transform: none;-webkit-transform: none;}
+
+/* maskweap */
+.maskweap{width: 100%;height: 100%;position: fixed;top: 0;left: 0;background-color: rgba(0,0,0,0.8);z-index:1;display: flex;display: -webkit-flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;display: none;}
+.maskweap .imgshow{width: 100%;box-sizing: border-box;height: 100%;display: flex;display: -webkit-flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;}
+.maskweap .imgshow img{display: block;width:auto;max-width: 28%;box-sizing: border-box;padding: 10px;background-color: #FFFFFF;}
+
+
+/*----------------------主结构边框----------------------*/
+    div.left001 {width: 25%;height: 90%;position:absolute;left: 0%;top:8%;border: 3px solid #0174f5;border-radius: 10px;background-color:rgba(20,51,104,0.54);}
+    div.right001 {width: 25%;height: 90%;position:absolute;right: 0%;top:8%;border:3px solid #0174f5;border-radius: 10px;background-color:rgba(20,51,104,0.54);}
+    div.middle001 {width: 47%;height:10%;position:absolute;right:26%;top:8%;border: 3px solid #0174f5;border-radius: 10px;background-color:rgba(20,51,104,0.54);}
+/*----------------------次级结构边框----------------------*/
+    div.video_show {width: 98%;height:30%;margin-left:auto;margin-right:auto;}
+    div.img_show {width: 98%;height:69%;margin-left:auto;margin-right:auto;margin-top:0%;border: 2px solid #0174f5;}
+    div.echart01 {width: 98%;height:24%;margin-left:auto;margin-right:auto;margin-top:1%;border: 2px solid #0174f5;}
+    div.echart02 {width: 98%;height:31%;margin-left:auto;margin-right:auto;margin-top:1%;border: 2px solid #0174f5;}
+    div.echart03 {width: 98%;height:24%;margin-left:auto;margin-right:auto;margin-top:1%;border: 2px solid #0174f5;}
+    div.echart04 {width: 98%;height:31%;margin-left:auto;margin-right:auto;margin-top:1%;border: 2px solid #0174f5;}
+    div.model_container {width:98%;height:90%;margin-left:auto;margin-right:auto;margin-top:1%;border: 2px solid #0174f5;}
+    </style>
+
+<script  type="text/javascript">
+	window.onload = function() {
+		var local1=document.getElementById('videoID');  //获取，函数执行完成后local内存释放
+		local1.autoplay = true; // 自动播放
+		local1.loop = true; // 循环播放
+		local1.muted=true; // 关闭声音，如果为false,视频无法自动播放
+		if(local1.paused){  //判断是否处于暂停状态
+			local1.play();  //开启播放
+	    }else{
+			local1.pause();  //停止播放
+	    }
+    }
+
+    function btn(){
+		var local=document.getElementById('videoID');  //获取，函数执行完成后local内存释放
+		if(local.paused){  //判断是否处于暂停状态
+			local.play();  //开启播放
+	    }else{
+			local.pause();  //停止播放
+	    }
+	}
+	</script>
+<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script  src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="./js/three.min.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <script src="./js/OBJLoader.js"></script>
+    <script src="./js/CSS2DRenderer.js"></script>
+    <script type="text/javascript" src="./js/EffectComposer.js"></script>
+    <script type="text/javascript" src="./js/RenderPass.js"></script>
+    <script type="text/javascript" src="./js/ShaderPass.js"></script>
+    <script type="text/javascript" src="./js/CopyShader.js"></script>
+    <script type="text/javascript" src="./js/OutlinePass.js"></script>
+    <script src="./js/vue@2.5.16.min.js"></script>
+    <script src="./js/index.js"></script>
+    <link rel="stylesheet" href="./js/index.css" />
+    <script type="text/javascript" src="./js/FXAAShader.js"></script>
+
+    <script type="text/javascript">
+			$(function(){
+
+				$(".imglist li").click(function(){
+					// 获取当前图片的src
+					var src=$(this).find(".imgbox img").attr('src');
+					//添加到弹窗img
+					$(".bigimg").attr("src",src);
+					// 显示弹窗
+					$(".maskweap").fadeIn();
+				});
+				// 点击盒子以外的地方弹窗关闭
+				$(document).mousedown(function(e) {
+					if ($(e.target).parent(".imgshow").length == 0) {
+						$(".maskweap").fadeOut(); //弹窗关闭
+					}
+				});
+			})
+		</script>
+
+  </head>
+  <body>
+    <div
+      style="
+        z-index: 2;
+        text-align: center;
+        font-size: 16px;
+        color: #00ffff;
+        top: 4px;
+        position: absolute;
+        width: 100%;
+        background: rgba(255, 0, 0, 0);
+      "
+    >
+    绞吸挖泥船定位钢桩工作状态智能监测预警
+    </div>
+    <div style="z-index: 1; position: absolute; width: 100%">
+      <img src="./UI图/line2.png" alt="" style="width: 100%; height: 28px" />
+    </div>
+
+    <div class="left001">
+      <div class="video_show" >
+          <video autoplay="autoplay" loop="loop" class="dataAllBorder02 video_cage " id="videoID" controls="controls">
+          <source class="video" title="主监控位" src="image/1.mp4" />
+          </video>
+      </div>
+      <div class="img_show">
+          <div class="title-box">
+            <div style="font-size: 20px;color:white;margin: auto;
+            width: 50%;">图片展示</div>
+          </div>
+          <div class="img_table" style="margin-top: 0%">
+          <table width="100%" border="3" cellpadding="0" cellspacing="0"  >
+              <tr>
+                  <th>
+                           <div class="imglistwrap">
+                     <ul class="imglist">
+                         <li>
+                             <div class="imgbox">
+                         <img src="image/Y方向弯曲应力云图.png" title="Y方向弯曲应力云图"/>
+                       </div>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="maskweap">
+               <div class="imgshow">
+             <img src="" class="bigimg" />
+               </div>
+                 </div>
+
+
+                  <th>
+                           <div class="imglistwrap">
+                     <ul class="imglist">
+                         <li>
+                             <div class="imgbox">
+                         <img src="image/Y方向剪应力云图.png" title="Y方向剪应力云图"/>
+                       </div>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="maskweap">
+               <div class="imgshow">
+             <img src="" class="bigimg" />
+               </div>
+                 </div>
+
+
+                  <th>
+                           <div class="imglistwrap">
+                     <ul class="imglist">
+                         <li>
+                             <div class="imgbox">
+                         <img src="image/Z方向弯曲应力云图.png" title="Z方向弯曲应力云图" />
+                       </div>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="maskweap">
+               <div class="imgshow">
+             <img src="" class="bigimg" />
+               </div>
+                 </div>
+              </tr>
+              <tr>
+                  <th>
+                           <div class="imglistwrap">
+                     <ul class="imglist">
+                         <li>
+                             <div class="imgbox">
+                         <img src="image/Z方向剪应力云图.png" title="Z方向剪应力云图"/>
+                       </div>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="maskweap">
+               <div class="imgshow">
+             <img src="" class="bigimg" />
+               </div>
+                 </div>
+
+                  <th>
+                           <div class="imglistwrap">
+                     <ul class="imglist">
+                         <li>
+                             <div class="imgbox">
+                         <img src="image/位移图.png" title="位移图" />
+                       </div>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="maskweap">
+               <div class="imgshow">
+             <img src="" class="bigimg" />
+               </div>
+                 </div>
+
+                  <th>
+                           <div class="imglistwrap">
+                     <ul class="imglist">
+                         <li>
+                             <div class="imgbox">
+
+                         <img src="image/正应力云图.png" title="正应力云图"/>
+
+                       </div>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="maskweap">
+               <div class="imgshow">
+             <img src="" class="bigimg" />
+               </div>
+                 </div>
+
+              </tr>
+          </table>
+          </div>
+      </div>
+  </div>
+
+  <div class="right001">
+
+    <div class="echart01">
+      <div class="left-top">
+        <div class="current-num">
+            <table class="table3" style="border:0px; width:96%">
+    <thead>
+      <tr>
+        <th ><h4 style="font-size:10px;color: #cdddf7;">状态</h4></th>
+        <th  style="text-align:left;"><div  class="breathe-zct"></div>&nbsp;&nbsp;正常</th>
+        <th style="text-align:left"><div  class="breathe-yct"></div>&nbsp;&nbsp;异常</th>
+      </tr>
+    </thead>
+    <tbody style="border:0px;">
+<!--<tr><td colspan="4"><p style="width:9.6rem;">暂无数据</p></td></tr>-->
+   
+     <tr style="border:0px;">
+       <td style="border:0px;"><div id="dx" class="breathe-zc"></div></td>
+       <td style="border:0px;"><div id="cz" class="breathe-zc"></td>
+       <td style="border:0px;"><div id="dmt" class="breathe-yc"></td>
+     </tr>
+     <tr style="border:0px;">
+       <td style="border:0px;">1</td>
+       <td style="border:0px;">2</td>
+       <td style="border:0px;">3</td>
+     </tr>
+    
+    </tbody>
+  </table>
+        </div>
+    </div>
+  </div>
+  
+  <div class="title-box1">
+    <div style="font-size: 15px;color:white;margin: auto;
+    width: 50%;">图表一</div>
+  </div>
+     <div class="echart02">
+         
+     <div id="main05" style="width: 80%;height: 110%;top:-10%;margin-left: auto;margin-right: auto"></div>
+     </div>
+
+     <div class="title-box1">
+      <div style="font-size: 15px;color:white;margin: auto;
+      width: 50%;">图表二</div>
+    </div>
+
+     <div class="echart04">
+         
+     <div id="biaoge" style="width: 80%;height: 110%;top:-10%;padding:0;margin-left: auto;margin-right: auto"></div>
+     </div>
+
+
+
+</div>
+
+
+    <div id="label" style="visibility: hidden">
+      <div style="position: relative">
+        <div
+          style="
+            position: absolute;
+            top: -50px;
+            left: 20px;
+            width: 100px;
+            color: #03b5b3;
+          "
+        ></div>
+        <div style="position: absolute; top: -30px; left: 0px">
+          <img src="./UI图/弹窗线/青色弹窗.png" alt="" />
+        </div>
+      </div>
+    </div>
+    <div id="label3" style="visibility: hidden">
+      <div style="position: relative">
+        <div
+          style="
+            position: absolute;
+            top: -120px;
+            left: 55px;
+            width: 100px;
+            color: #ffffff;
+          "
+        ></div>
+        <div style="position: absolute; top: -100px; left: 0px">
+          <img src="./UI图/弹窗线/白色弹窗.png" alt="" />
+        </div>
+      </div>
+    </div>
+    <div id="app">
+      <div style="position: absolute; left: 25px; top: 50px"></div>
+      <div class="middle001">
+        <div
+          class="HUD"
+          style="
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            position: absolute;
+            left: 5px;
+            top: 10px;
+            right: 5px;
+            z-index: 5;
+            line-height: 20px;
+            vertical-align: middle;
+          "
+        >
+          <el-switch
+            style="margin-top: -3px"
+            v-model="switchBool"
+            active-color="#00aeef"
+          ></el-switch>
+          <span style="color: #ffffff; font-size: 16px">隐藏模型</span>
+          &nbsp;&nbsp;&nbsp;<el-switch
+            style="margin-top: -3px"
+            v-model="tagBool"
+            active-color="#00aeef"
+          ></el-switch>
+          <span style="color: #ffffff; font-size: 16px">显示标签</span>
+          &nbsp;&nbsp;&nbsp;
+          <el-switch
+            style="margin-top: -3px"
+            v-model="clipBool"
+            active-color="#00aeef"
+          ></el-switch>
+          <span style="color: #ffffff; font-size: 16px">关闭颜色显示</span>
+        </div>
+      </div>
+
+      <div
+        v-cloak
+        id="tan"
+        style="width: 500px; height: 400px"
+        ref="tan"
+        :style="{left:left + 'px',top:top + 'px'}"
+        v-show="bool"
+      >
+        <div style="position: relative">
+          <div style="position: absolute; left: 0px; top: 0px">
+            <img
+              src="./UI图/显示面板/2.png"
+              alt=""
+              style="width: 600px; opacity: 1"
+            />
+          </div>
+          <div
+            style="
+              position: absolute;
+              left: 50px;
+              top: 50px;
+              font-size: 16px;
+              padding: 8px 25px;
+              border-radius: 30px;
+              border: 1px solid #00ffff;
+            "
+          >
+            {{ currentMesh.name }}
+          </div>
+
+          <div
+            style="position: absolute; left: 275px; top: 30px; font-size: 20px"
+          >
+            {{ currentMesh.云图 }}
+          </div>
+          <div
+            style="
+              position: absolute;
+              left: 100px;
+              top: 100px;
+              font-size: 60px;
+              color: #00ffff;
+              vertical-align: middle;
+            "
+          >
+            <img
+              :src="currentMesh.iconpath"
+              alt=""
+              style="width: 400px; height: 188px"
+            />
+          </div>
+          <div
+            style="
+              position: absolute;
+              left: 250px;
+              top: 60px;
+              font-size: 20px;
+              color: white;
+              vertical-align: middle;
+            "
+          >
+            状态：{{ currentMesh.状态 }}
+          </div>
+          <div
+            style="
+              position: absolute;
+              left: 75px;
+              top: 300px;
+              padding: 8px 25px;
+              border-radius: 30px;
+              border: 1px solid #00ffff;
+            "
+          >
+            高度—{{ currentMesh.高度 }} m
+          </div>
+          <div
+            style="
+              position: absolute;
+              left: 300px;
+              top: 300px;
+              padding: 8px 25px;
+              border-radius: 30px;
+              border: 1px solid #00ffff;
+            "
+          >
+            材质—混凝土
+          </div>
+        </div>
+      </div>
+    </div>
+    <script id="vertexShader" type="x-shader/x-vertex">
+
+      attribute vec4 orientation;  attribute vec3 offset;  attribute vec2 scale;  attribute float life;  attribute float random;  varying vec2 vUv;  varying float vRandom;  varying float vAlpha;  float range(float oldValue, float oldMin, float oldMax, float newMin, float newMax) {      float oldRange = oldMax - oldMin;      float newRange = newMax - newMin;      return (((oldValue - oldMin) * newRange) / oldRange) + newMin;  }float pcurve(float x, float a, float b) {      float k = pow(a + b, a + b) / (pow(a, a) * pow(b, b));      return k * pow(x, a) * pow(1.0 - x, b);  }  void main() {      vUv = uv;      vRandom = random;      vAlpha = pcurve(life, 1.0, 2.0);      vec3 pos = position;      pos.xy *= scale * vec2(range(pow(life, 1.5), 0.0, 1.0, 1.0, 0.6), range(pow(life, 1.5), 0.0, 1.0, 0.6, 1.2));      vec4 or = orientation;      vec3 vcV = cross(or.xyz, pos);      pos = vcV * (2.0 * or.w) + (cross(or.xyz, vcV) * 2.0 + pos);      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);  }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+
+      uniform sampler2D uMap;  uniform vec3 uColor1;  uniform vec3 uColor2;  uniform float uTime;  varying vec2 vUv;  varying float vAlpha;  varying float vRandom;  void main() {      vec2 uv = vUv;      float spriteLength = 10.0;      uv.x /= spriteLength;      float spriteIndex = mod(uTime * 0.1 + vRandom * 2.0, 1.0);      uv.x += floor(spriteIndex * spriteLength) / spriteLength;      vec4 map = texture2D(uMap, uv);      gl_FragColor.rgb = mix(uColor2, uColor1, map.r);      gl_FragColor.a = vAlpha * map.a;  }
+    </script>
+    <script>
+      var scene = new THREE.Scene();
+      var textureLoader = new THREE.TextureLoader();
+      var texture = textureLoader.load("./贴图/背景/1.png");
+      scene.background = texture;
+      var group1 = new THREE.Group();
+      var group2 = new THREE.Group();
+      var group3 = new THREE.Group();
+      group1.position.set(0, -40, 0);
+      var AllGroup = new THREE.Group();
+      AllGroup.add(group1, group2);
+      scene.add(AllGroup);
+      var treeData = [
+        {
+          id: group1.id,
+          label: "定位钢桩",
+          children: [],
+        },
+      ];
+      var OBJLoader = new THREE.OBJLoader();
+
+      OBJLoader.load("./圆柱模型/定位桩01.obj", function (obj) {
+        var mesh = obj.children[0];
+        mesh.rotateZ(Math.PI);
+        mesh.translateY(-36);
+        for (let i = 0; i < 1; i++) {
+          for (let j = 0; j < 1; j++) {
+            var Mesh = mesh.clone();
+            Mesh.material = new THREE.MeshPhongMaterial({
+              transparent: true,
+              side: THREE.DoubleSide,
+              clipIntersection: true,
+            });
+            Mesh.name = "定位钢桩";
+            Mesh.translateX(i * 26);
+            Mesh.translateZ(j * 21);
+            Mesh.rotateY(Math.PI / 6);
+            group1.add(Mesh);
+            Mesh.高度 = 36;
+            Mesh.材质 = 120;
+            Mesh.云图 = "云图";
+            Mesh.状态 = "正常";
+            Mesh.iconpath = "./UI图/云图/云图1.jpg";
+            var geometry2 = new THREE.CylinderGeometry(
+              2.5 - 0.2,
+              2.5 - 0.2,
+              Mesh.材质,
+              100
+            );
+            var material2 = new THREE.MeshLambertMaterial({
+              color: 0xb634,
+            });
+            var mesh2 = new THREE.Mesh(geometry2, material2);
+            Mesh.add(mesh2);
+            mesh2.translateY(60 - Mesh.材质 / 2);
+            var text = document.getElementById("label").cloneNode(true);
+            text.style.visibility = "hidden";
+            text.className = "label";
+            text.childNodes[1].childNodes[1].textContent = Mesh.name;
+            var label = new THREE.CSS2DObject(text);
+            label.position.copy(Mesh.position);
+            group1.add(label);
+            treeData[0].children.push({
+              id: Mesh.id,
+              mesh: Mesh,
+              label: Mesh.name,
+              children: [],
+            });
+          }
+        }
+      });
+      
+
+      var axesHelper = new THREE.AxesHelper(500);
+      var directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+      directionalLight.position.set(50, 250, 500);
+      scene.add(directionalLight);
+      var directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+      directionalLight2.position.set(-400, -400, -400);
+      scene.add(directionalLight2);
+      var ambient = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambient);
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+      var k = width / height;
+      var s = 100;
+      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 20000);
+      camera.position.set(314, 202, 243);
+      camera.lookAt(scene.position);
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true,
+      });
+      renderer.setSize(width, height);
+      renderer.setClearColor(0x409eff, 1);
+      document.body.appendChild(renderer.domElement);
+      var labelRenderer = new THREE.CSS2DRenderer();
+      labelRenderer.setSize(window.innerWidth, window.innerHeight);
+      labelRenderer.domElement.style.position = "absolute";
+      labelRenderer.domElement.style.top = "0";
+      labelRenderer.domElement.style.pointerEvents = "none";
+      document.body.appendChild(labelRenderer.domElement);
+      var renderPass = new THREE.RenderPass(scene, camera);
+      var OutlinePass = new THREE.OutlinePass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        scene,
+        camera
+      );
+      OutlinePass.visibleEdgeColor = new THREE.Color(0, 1, 0);
+      OutlinePass.hiddenEdgeColor = new THREE.Color(0, 1, 0);
+      OutlinePass.edgeThickness = 3.0;
+      var composer = new THREE.EffectComposer(renderer);
+      composer.addPass(renderPass);
+      composer.addPass(OutlinePass);
+      var FXAAShaderPass = new THREE.ShaderPass(THREE.FXAAShader);
+      FXAAShaderPass.renderToScreen = true;
+      FXAAShaderPass.uniforms["resolution"].value.set(
+        1 / window.innerWidth,
+        1 / window.innerHeight
+      );
+      composer.addPass(FXAAShaderPass);
+      var RainGroup = new THREE.Group();
+
+      var clock = new THREE.Clock();
+      var FPS = 30;
+      var T = 1 / FPS;
+      var timeS = 0;
+      var i = 0;
+      scene.rotateY(-0.3);
+      function render() {
+        i += 1;
+        if (i < 300) {
+          scene.rotateY(0.001);
+        }
+        RainGroup.children.forEach((sprite) => {
+          sprite.position.y -= 0.5;
+          if (sprite.position.y < 0) {
+            sprite.position.y = 200;
+          }
+        });
+        requestAnimationFrame(render);
+        var deltaT = clock.getDelta();
+        timeS = timeS + deltaT;
+        if (timeS > T) {
+          composer.render();
+          labelRenderer.render(scene, camera);
+          timeS = 0;
+        }
+      }
+      render();
+      var controls = new THREE.OrbitControls(camera);
+      controls.enablePan = false;
+      controls.minZoom = 0.6;
+      controls.maxZoom = 3;
+
+      var label = null;
+      renderer.localClippingEnabled = true;
+      var PlaneArr = [
+        new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1),
+        new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
+      ];
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          treeData: treeData,
+          currentMesh: {
+            name: "",
+            高度: 0,
+            材质: 0,
+            云图: "",
+          },
+          name: null,
+          bool: false,
+          left: 500,
+          top: 500,
+          switchBool: true,
+          clipBool: true,
+          tagBool: true,
+          rainBool: true,
+          conLeft: -150 - 30,
+          openLeftBool: false,
+          S: 0,
+        },
+        methods: {
+          nodeClick: function (data) {
+            var mesh = data.mesh;
+            if (mesh) {
+              OutlinePass.selectedObjects = [mesh];
+              this.currentMesh = mesh;
+              this.bool = true;
+              scene.updateMatrixWorld(true);
+              var worldPosition = new THREE.Vector3();
+              mesh.getWorldPosition(worldPosition);
+              var standardVector = worldPosition.project(camera);
+              var a = window.innerWidth / 2;
+              var b = window.innerHeight / 2;
+              this.left = Math.round(standardVector.x * a + a);
+              this.top = Math.round(-standardVector.y * b + b);
+            } else {
+              this.bool = false;
+              OutlinePass.selectedObjects = [];
+            }
+          },
+          openLeft: function () {
+            if (this.openLeftBool) {
+              this.conLeft = -150 - 30;
+              this.openLeftBool = false;
+            } else {
+              this.conLeft = 0;
+              this.openLeftBool = true;
+            }
+          },
+        },
+        watch: {
+          switchBool(value) {
+            if (value) {
+              AllGroup.children.forEach(function (group) {
+                group.children.forEach(function (mesh) {
+                  if (mesh.type === "Mesh") {
+                    mesh.material.visible = true;
+                  }
+                });
+              });
+            } else {
+              AllGroup.children.forEach(function (group) {
+                group.children.forEach(function (mesh) {
+                  if (mesh.type === "Mesh") {
+                    mesh.material.visible = false;
+                  }
+                });
+              });
+            }
+          },
+          clipBool: function (value) {
+            if (value) {
+              renderer.localClippingEnabled = true;
+            } else {
+              renderer.localClippingEnabled = false;
+            }
+          },
+          tagBool: function (value) {
+            if (value) {
+              var arr = document.getElementsByClassName("label");
+              for (var i = 0; i < arr.length; i++) {
+                arr[i].style.visibility = "hidden";
+              }
+            } else {
+              var arr = document.getElementsByClassName("label");
+              for (var i = 0; i < arr.length; i++) {
+                arr[i].style.visibility = "visible";
+              }
+            }
+          },
+          rainBool: function (value) {
+            if (value) {
+              scene.remove(RainGroup);
+            } else {
+              scene.add(RainGroup);
+            }
+          },
+        },
+        mounted: function () {},
+      });
+      let lastMesh = null;
+      function choose(event) {
+        if (lastMesh) {
+          vm.bool = false;
+          lastMesh.material.clippingPlanes = null;
+          OutlinePass.selectedObjects = [];
+        }
+        var Sx = event.clientX;
+        var Sy = event.clientY;
+        vm.left = Sx + 20;
+        vm.top = Sy + 20;
+        var x = (Sx / window.innerWidth) * 2 - 1;
+        var y = -(Sy / window.innerHeight) * 2 + 1;
+        var raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+        var intersects = raycaster.intersectObjects(AllGroup.children, true);
+        if (intersects.length > 0) {
+          vm.bool = true;
+          var mesh = intersects[0].object;
+          vm.currentMesh = mesh;
+          OutlinePass.selectedObjects = [mesh];
+          var S = vm.currentMesh.吨位;
+          vm.S = 0;
+          var startTime = new Date().getTime();
+          var interval = setInterval(function () {
+            if (new Date().getTime() - startTime > (S / 58) * 6) {
+              clearInterval(interval);
+              return;
+            }
+            if (vm.S < S) {
+              vm.S += 58;
+              console.log(vm.S);
+            }
+          }, 6);
+          scene.updateMatrixWorld(true);
+          var worldPosition = new THREE.Vector3();
+          mesh.getWorldPosition(worldPosition);
+          lastMesh = mesh;
+          PlaneArr[0].constant = worldPosition.x;
+          PlaneArr[1].constant = worldPosition.z;
+          mesh.material.clipIntersection = true;
+          mesh.material.clippingPlanes = PlaneArr;
+        }
+      }
+      addEventListener("click", choose);
+      initFire(20, 40, 20, 30, 0);
+      function initFire(w, h, posX, posY, posZ) {
+        function random(min, max, precision) {
+          var p = Math.pow(10, precision);
+          return Math.round((min + Math.random() * (max - min)) * p) / p;
+        }
+        var fireVertexShader =
+          document.getElementById("vertexShader").innerText;
+        var fireFragmentShader =
+          document.getElementById("fragmentShader").innerText;
+        var _geometry, _shader, _mesh, _group;
+        var _num = 12;
+        var _x = new THREE.Vector3(1, 0, 0);
+        var _y = new THREE.Vector3(0, 1, 0);
+        var _z = new THREE.Vector3(0, 0, 1);
+        var _tipTarget = new THREE.Vector3();
+        var _tip = new THREE.Vector3();
+        var _diff = new THREE.Vector3();
+        var _quat = new THREE.Quaternion();
+        var _quat2 = new THREE.Quaternion();
+        (function () {
+          initGeometry();
+          initInstances();
+          initShader();
+          initMesh();
+          requestAnimationFrame(loop);
+        })();
+        function initGeometry() {
+          _geometry = new THREE.InstancedBufferGeometry();
+          _geometry.maxInstancedCount = _num;
+          var shape = new THREE.PlaneBufferGeometry(w, h);
+          shape.translate(0, 0.4, 0);
+          var data = shape.attributes;
+          _geometry.addAttribute(
+            "position",
+            new THREE.BufferAttribute(new Float32Array(data.position.array), 3)
+          );
+          _geometry.addAttribute(
+            "uv",
+            new THREE.BufferAttribute(new Float32Array(data.uv.array), 2)
+          );
+          _geometry.addAttribute(
+            "normal",
+            new THREE.BufferAttribute(new Float32Array(data.normal.array), 3)
+          );
+          _geometry.setIndex(
+            new THREE.BufferAttribute(new Uint16Array(shape.index.array), 1)
+          );
+          shape.dispose();
+        }
+        function initInstances() {
+          var orientation = new THREE.InstancedBufferAttribute(
+            new Float32Array(_num * 4),
+            4
+          );
+          var randoms = new THREE.InstancedBufferAttribute(
+            new Float32Array(_num),
+            1
+          );
+          var scale = new THREE.InstancedBufferAttribute(
+            new Float32Array(_num * 2),
+            2
+          );
+          var life = new THREE.InstancedBufferAttribute(
+            new Float32Array(_num),
+            1
+          );
+          for (let i = 0; i < _num; i++) {
+            orientation.setXYZW(i, 0, 0, 0, 1);
+            life.setX(i, i / _num + 1);
+          }
+          _geometry.addAttribute("orientation", orientation);
+          _geometry.addAttribute("scale", scale);
+          _geometry.addAttribute("life", life);
+          _geometry.addAttribute("random", randoms);
+        }
+
+        function loop(e) {
+          requestAnimationFrame(loop);
+          _shader.uniforms.uTime.value = e * 0.001;
+          var life = _geometry.attributes.life;
+          var orientation = _geometry.attributes.orientation;
+          var scale = _geometry.attributes.scale;
+          var randoms = _geometry.attributes.random;
+          for (let i = 0; i < _num; i++) {
+            var value = life.array[i];
+            value += 0.04;
+            if (value > 1) {
+              value -= 1;
+              _quat.setFromAxisAngle(_y, random(0, 3.14, 3));
+              _quat2.setFromAxisAngle(_x, random(-1, 1, 2) * 0.1);
+              _quat.multiply(_quat2);
+              _quat2.setFromAxisAngle(_z, random(-1, 1, 2) * 0.3);
+              _quat.multiply(_quat2);
+              orientation.setXYZW(i, _quat.x, _quat.y, _quat.z, _quat.w);
+              scale.setXY(i, random(0.8, 1.2, 3), random(0.8, 1.2, 3));
+              randoms.setX(i, random(0, 1, 3));
+            }
+            life.setX(i, value);
+          }
+          life.needsUpdate = true;
+          orientation.needsUpdate = true;
+          scale.needsUpdate = true;
+          randoms.needsUpdate = true;
+          _group.position.x = posX;
+          _group.position.y = posY;
+          _group.position.z = posZ;
+          let tipOffset = 0.4;
+          _tipTarget.copy(_group.position);
+          _tipTarget.y += tipOffset;
+          _tip.lerp(_tipTarget, 0.1);
+          _diff.copy(_tip);
+          _diff.sub(_group.position);
+          let length = _diff.length();
+          _group.scale.y = (length / tipOffset - 1) * 0.4 + 1;
+          _group.quaternion.setFromUnitVectors(_y, _diff.normalize());
+        }
+      }
+      window.onresize = function () {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        k = window.innerWidth / window.innerHeight;
+        camera.left = -s * k;
+        camera.right = s * k;
+        camera.top = s;
+        camera.bottom = -s;
+        camera.updateProjectionMatrix();
+        location.reload();
+      };
+    </script>
+
+<script type="text/javascript">
+			var myChart=echarts.init(document.getElementById('main03'));
+			// 指定图标的配置项和数据
+			var option = {
+				tooltip: {},
+                grid: {
+top:"25%",bottom:"50",
+    right:"0%",left:"15%",
+
+    containLabel: false  // 这个啥？看下面
+  },
+                toolbox: {top:"10%",right:'0%',
+                 feature: {
+                     dataView: {show: true, readOnly: false},
+                     magicType: {show: true, type: ['line', 'bar']},
+                     restore: {show: true},
+                     saveAsImage: {show: true}
+                 }
+             },
+				legend:{
+					data:['销售']
+				},
+				xAxis:{
+					data:['8:00','8:05','8:10','8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55'],
+                            axisLine: {
+            lineStyle:{
+                color:'white',//x轴的颜色
+                width:3,//轴线的宽度
+            }
+        },
+				},
+				yAxis:{
+				        axisLine: {
+       lineStyle:{
+          color:'white',// y轴的颜色
+          width:3,//y轴线的宽度
+    }
+}
+                },
+				series:[{
+					name:'数据',
+					type:'line',
+					data:[0.5,0.3,0,-0.2,-0.3,0.4,0.6,-0.1,-0.3,0.2,0.2,0],
+                    itemStyle : {
+                        normal : {
+                            color:'#D3D3D3', //改变点的颜色
+                            lineStyle:{
+                                color:'orange' //改变折线颜色
+                            }
+                        }
+                    },
+				}]
+			};
+			myChart.setOption(option);
+		</script>
+<script type="text/javascript">
+var dom = document.getElementById("main04");
+var myChart = echarts.init(dom);
+var app = {};
+var option;
+
+var x_axis = [];
+var x_data = 0;
+var y_axis = [];
+var y_data = 0;
+var angle = 0;
+
+// 计算三角函数
+function sin_data(x) {
+    return Math.sin(x*Math.PI);
+}
+// 生成x轴和y轴数据
+function addData(shift) {
+    x_data++;
+    x_axis.push(x_data);
+
+	y_data = 20*sin_data(angle);
+    y_axis.push(y_data);
+    angle+=0.1;
+
+    if (shift) {
+        x_axis.shift();
+        y_axis.shift();
+	}
+}
+
+// 生成100个数据，初始化x_axis和y_axis数组，数组的长度在这里被设置成100
+for (var i = 0; i < 100; i++) {
+    addData(false);
+}
+
+option = {
+    toolbox: {top:"0%",right:'0%',
+                 feature: {
+                     dataView: {show: true, readOnly: false},
+                     magicType: {show: true, type: ['line', 'bar']},
+                     restore: {show: true},
+                     saveAsImage: {show: true}
+                 }
+             },
+    grid: {
+
+    top: "17%",right:"0%",left:"15%",
+
+    containLabel: false  // 这个啥？看下面
+  },
+    xAxis: {
+        type: 'category',
+        data: x_axis,
+          axisLine: {
+              lineStyle: {
+                  color: 'white',//x轴的颜色
+                  width: 1,//轴线的宽度
+              }
+          }
+    },
+    yAxis: {
+        axisLine: {
+              lineStyle: {
+                  color: 'white',//x轴的颜色
+                  width: 1,//轴线的宽度
+              }
+          },
+        type: 'value',
+    },
+    series: [{
+        data: y_axis,
+        type: 'line'
+    }]
+};
+
+setInterval(function () {;
+    addData(true); // 生成数据并左移
+    myChart.setOption(option);
+}, 2000); // 500ms刷新一次
+        </script>
+
+<script type="text/javascript">
+  var main05 = echarts.init(document.getElementById('main05'));
+
+var main05option = {
+  tooltip: {},
+  grid: {
+    top: "25%",
+    bottom: "50",
+    right: "0%",
+    left: "15%",
+    containLabel: false
+  },
+  toolbox: {
+    top: "10%",
+    right: '0%',
+    feature: {
+      dataView: { show: true, readOnly: false },
+      magicType: { show: true, type: ['line', 'bar'] },
+      restore: { show: true },
+      saveAsImage: { show: true }
+    }
+  },
+  legend: {
+    data: ['销售']
+  },
+  xAxis: {
+    data: ['8:00', '8:05', '8:10', '8:15', '8:20', '8:25', '8:30', '8:35', '8:40', '8:45', '8:50', '8:55'],
+    axisLine: {
+      lineStyle: {
+        color: 'white',
+        width: 3,
+      }
+    },
+  },
+  yAxis: {
+    axisLine: {
+      lineStyle: {
+        color: 'white',
+        width: 3,
+      }
+    },
+  },
+  series: [{
+    name: '数据',
+    type: 'line',
+    data: [],
+    itemStyle: {
+      normal: {
+        color: '#D3D3D3',
+        lineStyle: {
+          color: 'orange'
+        }
+      }
+    },
+  }],
+};
+
+main05.setOption(main05option);
+
+setInterval(function() {
+  var data = [];
+  for (var i = 0; i < 12; i++) {
+    data.push(Math.random() * 2 - 1);
+  }
+  main05option.series[0].data = data;
+  main05option.animation = true;
+  main05.setOption(main05option);
+}, 2000);
+</script>
+<script type="text/javascript">
+  var biaoge = echarts.init(document.getElementById('biaoge'));
+var biaogeoption;
+
+biaogeoption = {
+  grid: {
+    top: "25%",
+    bottom: "50",
+    right: "5%",
+    left: "15%",
+    containLabel: false
+  },
+  toolbox: {
+    top: '0%',
+    right: '0%',
+    feature: {
+      dataView: { show: true, readOnly: false },
+      magicType: { show: true, type: ['line', 'bar'] },
+      restore: { show: true },
+      saveAsImage: { show: true }
+    }
+  },
+  xAxis: {
+    axisLine: {
+      lineStyle: {
+        color: 'white',
+        width: 3,
+      }
+    },
+    boundaryGap: false,
+    data: ['1', '2', '3', '4', '5', '6', '7']
+  },
+  yAxis: {
+    axisLine: {
+      lineStyle: {
+        color: 'white',
+        width: 3,
+      }
+    },
+  },
+  series: [
+    {
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'line',
+      areaStyle: {}
+    }
+  ]
+};
+
+setInterval(function() {
+  var data = [];
+  for (var i = 0; i < 7; i++) {
+    data.push(Math.floor(Math.random() * 1000));
+  }
+  biaogeoption.series[0].data = data;
+  biaoge.setOption(biaogeoption, true); //true 表示使用动画效果
+}, 2000);
+</script>
+
+<script type="text/javascript">
+  var myChart = echarts.init(document.getElementById('mychart'));
+var option;
+
+option = {
+  grid: {
+    top: '25%',
+    bottom: '50',
+    right: '5%',
+    left: '15%',
+    containLabel: false
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {},
+  toolbox: {
+    show: true,
+    feature: {
+      dataZoom: {
+        yAxisIndex: 'none'
+      },
+      dataView: { readOnly: false },
+      magicType: { type: ['line', 'bar'] },
+      restore: {},
+      saveAsImage: {}
+    }
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: ['1', '2', '3', '4', '5', '6', '7']
+  },
+  yAxis: {
+    type: 'value',
+    axisLabel: {
+      formatter: '{value}'
+    }
+  },
+  series: [
+    {
+      name: '数据一',
+      type: 'line',
+      data: [10, 11, 13, 11, 12, 12, 9],
+      markPoint: {
+        data: [
+          { type: 'max', name: 'Max' },
+          { type: 'min', name: 'Min' }
+        ]
+      },
+      markLine: {
+        data: [{ type: 'average', name: 'Avg' }]
+      }
+    },
+    {
+      name: '数据二',
+      type: 'line',
+      data: [1, -2, 2, 5, 3, 2, 0],
+      markPoint: {
+        data: [{ name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }]
+      },
+      markLine: {
+        data: [
+          { type: 'average', name: 'Avg' },
+          [
+            {
+              symbol: 'none',
+              x: '90%',
+              yAxis: 'max'
+            },
+            {
+              symbol: 'circle',
+              label: {
+                position: 'start',
+                formatter: 'Max'
+              },
+              type: 'max',
+              name: '最高点'
+            }
+          ]
+        ]
+      }
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+</script>
+
+  </body>
+ 
+ <script type="text/javascript">
+    $('document').ready(function () {
+        $("body").css('visibility', 'visible');
+        var localData = [$('#teacher').val(), $('#start').val() + '/' + $('#end').val(), $('#leader').val()]
+        localStorage.setItem("data", localData);
+        
+		//设置渠道状态
+		qdzt();
+    })
+	
+	//设置渠道状态
+	function qdzt(){
+		//breathe-zc 绿灯；breathe-yc 红灯
+		$("#dx").removeClass("breathe-yc");
+		$("#dx").addClass("breathe-zc");
+
+		$("#cz").removeClass("breathe-zc");
+		$("#cz").addClass("breathe-yc");
+
+		$("#dmt").removeClass("breathe-yc");
+		$("#dmt").addClass("breathe-zc");
+	}
+</script>
+
+</html>
